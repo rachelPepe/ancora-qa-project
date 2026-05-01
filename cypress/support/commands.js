@@ -1,25 +1,34 @@
 // ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+// This is the custom command requirement
+// Creates reusable authentication
+
+// defines new cypress command called authenticate
+Cypress.Commands.add("authenticate", () => {
+  // sends POST requests to /users (becomes https://jsonplaceholder.typicode.com/users because of base URL)
+  cy.request({
+    method: "POST",
+    url: "/users",
+    body: {
+        // uses values from cypress.env.json
+      name: Cypress.env("username"),
+      email: Cypress.env("email"),
+    },
+ // when API resonds this runs 
+  }).then((response) => {
+    // verify request succeeded
+    expect(response.status).to.eq(201);
+    // verify response contains an ID
+    expect(response.body).to.have.property("id");
+
+    // pretending the ID is my authentication token even though its fake
+    const token = response.body.id;
+
+    // Save to Cypress env (runtime) stores token in memory
+    Cypress.env("token", token);
+
+    // Persist to file
+    // calls the custom task defined in cypress.config.js 
+    // writes the token into cypress.env.json
+    cy.task("setEnv", { key: "token", value: token });
+  });
+});
