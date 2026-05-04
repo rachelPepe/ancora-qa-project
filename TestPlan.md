@@ -1,7 +1,7 @@
 # QA Automation Test Plan
 **Project:** Ancora QA Automation Assessment  
 **Author:** Rachel Pepe  
-**Date:** April 2026
+**Date:** May 2026
 
 ---
 
@@ -12,83 +12,6 @@ This includes verifying authentication behavior, resource creation, retrieval, a
 
 The test suite is designed to demonstrate reliable state management across independent test files, proper use of test data and reusable components, and readiness for execution within a CI/CD pipeline.
 
-
-## 1. Scope
-
-This test suite validates core REST API functionality using Cypress against the JSONPlaceholder mock API.
-
-The following endpoints are included:
-
-| Spec | Method | Endpoint        | Purpose |
-|------|--------|-----------------|---------|
-| 01   | POST   | /users          | Simulate authentication and capture a token (user ID) |
-| 02   | POST   | /posts          | Create a new post and persist the returned ID |
-| 03   | GET    | /posts/:id      | Retrieve the created post using stored ID |
-| 04   | DELETE | /posts/:id      | Delete the created post using stored ID |
-
-These endpoints were selected to simulate a realistic API workflow: authentication, resource creation, retrieval, and deletion.
-
-
-## 2. Test Approach
-
-### 2.1 Positive Testing
-
-Each endpoint will be validated for expected successful behavior, including: 
-
-- Correct HTTP status codes (e.g. 200, 201)
-- Expected response structure and properties 
-- Data Consistency across requests (e.g. retrieved ID matches created ID)
-
-Examples: 
-- POST /users returns a 201 status and contains an 'id'
-- POST /posts returns a valid post object with 'id', 'title', and 'body'
-- GET /posts/:id returns the correct post matching the stored ID
-- DELETE /posts/:id returns a successful status code (200 or 204)
-
-### 2.2 Negative Testing 
-
-Negative test cases are included to validate how the API handles invalid or incomplete requests. 
-
-Planned scenarios include:
-
-- POST request with missing required fields 
-- POST request without Authorization header
-- GET request for a non-existent resource (e.g. /posts/99999)
-- DELETE request for a non-existent resource
-
-Since JSONPlaceholder is a mock API, some negative tests may not return realistic HTTP responses. These discrepancies will be documented and compared to expected real-world behavior.
-
-### 2.3 Edge Case Testing
-
-Additional validations include:
-
-- GET /posts returns an array with length greater than zero
-- Verification of response types (array vs object)
-- Validation that required fields exist in responses 
-
-## Dependency Strategy (State Management)
-
-Cypress executes each spec file independently, meaning in-memory variables cannot be shared across files. 
-
-To maintain state across the test suite: 
-
-- Values such as the authentication token and created post ID will be written to 'cypress.env.json' using 'cy.task('setEnv')'
-- Downstream spec files will retrieve these values using 'cy.readFiles()'
-
-This approach ensures:
-
-- Reliable data persistence across spec files
-- Compatibility with CI/CD environments where tests may run independently 
-- Avoidance of brittle in-memory state
-
-## Proposed File And Folder Structure
-
-# QA Automation Test Plan  
-**Project:** Ancora QA Automation Assessment  
-**Author:** Rachel Pepe  
-**Date:** [Enter Date]
-
----
 
 ## 1. Scope
 
@@ -196,7 +119,7 @@ This approach ensures:
 ├── package-lock.json
 └── package.json
 
-## Mock API Limitations
+## 5. Mock API Limitations
 
 JSONPlaceholder differs from a real production API in several key ways:
 
@@ -214,7 +137,7 @@ JSONPlaceholder differs from a real production API in several key ways:
 
 These limitations will be documented within test cases and reports to demonstrate understanding of expected production behavior.
 
-## Pipeline Stage Strategy
+## 6 Pipeline Stage Strategy
 
 The Azure pipeline will simulate a CI/CD workflow with the following stages:
 
