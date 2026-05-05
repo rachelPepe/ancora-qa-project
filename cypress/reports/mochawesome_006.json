@@ -1,0 +1,130 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 1,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-05-04T23:29:22.667Z",
+    "end": "2026-05-04T23:29:23.836Z",
+    "duration": 1169,
+    "testsRegistered": 2,
+    "passPercent": 50,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "8cf1ffb5-5a35-46c6-b446-c1d5e3d8a5f3",
+      "title": "",
+      "fullFile": "cypress/e2e/03_getPost.spec.js",
+      "file": "cypress/e2e/03_getPost.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [
+        {
+          "title": "should return 404 for invalid post ID",
+          "fullTitle": "should return 404 for invalid post ID",
+          "timedOut": null,
+          "duration": 114,
+          "state": "passed",
+          "speed": "fast",
+          "pass": true,
+          "fail": false,
+          "pending": false,
+          "context": null,
+          "code": "cy.request({\n  method: \"GET\",\n  url: \"/posts/999999\",\n  failOnStatusCode: false\n}).then(response => {\n  expect(response.status).to.eq(404);\n});",
+          "err": {},
+          "uuid": "5bb6e41a-7f9a-4d59-b987-399c955cc525",
+          "parentUUID": "8cf1ffb5-5a35-46c6-b446-c1d5e3d8a5f3",
+          "isHook": false,
+          "skipped": false
+        }
+      ],
+      "suites": [
+        {
+          "uuid": "5ef10a4f-1312-45ef-a9b1-55e141a7bb4b",
+          "title": "Spec 03 - Get Post",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should retrieve the created post",
+              "fullTitle": "Spec 03 - Get Post should retrieve the created post",
+              "timedOut": null,
+              "duration": 952,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const postId = Cypress.env(\"createdPostId\");\ncy.request({\n  method: \"GET\",\n  url: `/posts/${postId}`\n}).then(response => {\n  expect(response.status).to.eq(200);\n  // Validate structure\n  expect(response.body).to.have.property(\"id\");\n  expect(response.body).to.have.property(\"title\");\n  expect(response.body).to.have.property(\"body\");\n  // Validate correct ID\n  expect(response.body.id).to.eq(postId);\n});",
+              "err": {
+                "message": "CypressError: `cy.request()` failed on:\n\nhttps://jsonplaceholder.typicode.com/posts/101\n\nThe response we received from your web server was:\n\n  > 404: Not Found\n\nThis was considered a failure because the status code was not `2xx` or `3xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\n-----------------------------------------------------------\n\nThe request we sent was:\n\nMethod: GET\nURL: https://jsonplaceholder.typicode.com/posts/101\nHeaders: {\n  \"Connection\": \"keep-alive\",\n  \"user-agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Cypress/15.14.2 Chrome/138.0.7204.251 Electron/37.6.0 Safari/537.36\",\n  \"accept\": \"*/*\",\n  \"accept-encoding\": \"gzip, deflate\"\n}\n\n-----------------------------------------------------------\n\nThe response we got was:\n\nStatus: 404 - Not Found\nHeaders: {\n  \"date\": \"Mon, 04 May 2026 23:29:23 GMT\",\n  \"content-type\": \"application/json; charset=utf-8\",\n  \"content-length\": \"2\",\n  \"connection\": \"keep-alive\",\n  \"access-control-allow-credentials\": \"true\",\n  \"cache-control\": \"max-age=43200\",\n  \"etag\": \"W/\\\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\\\"\",\n  \"expires\": \"-1\",\n  \"nel\": \"{\\\"report_to\\\":\\\"heroku-nel\\\",\\\"response_headers\\\":[\\\"Via\\\"],\\\"max_age\\\":3600,\\\"success_fraction\\\":0.01,\\\"failure_fraction\\\":0.1}\",\n  \"pragma\": \"no-cache\",\n  \"report-to\": \"{\\\"group\\\":\\\"heroku-nel\\\",\\\"endpoints\\\":[{\\\"url\\\":\\\"https://nel.heroku.com/reports?s=MHSs%2BvjAvv%2FTt3YfXSUnN%2B%2B8kADQK%2B0qMDZ8hJrJi7g%3D\\\\u0026sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d\\\\u0026ts=1777918379\\\"}],\\\"max_age\\\":3600}\",\n  \"reporting-endpoints\": \"heroku-nel=\\\"https://nel.heroku.com/reports?s=MHSs%2BvjAvv%2FTt3YfXSUnN%2B%2B8kADQK%2B0qMDZ8hJrJi7g%3D&sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&ts=1777918379\\\"\",\n  \"server\": \"cloudflare\",\n  \"vary\": \"Origin, Accept-Encoding\",\n  \"via\": \"2.0 heroku-router\",\n  \"x-content-type-options\": \"nosniff\",\n  \"x-powered-by\": \"Express\",\n  \"x-ratelimit-limit\": \"1000\",\n  \"x-ratelimit-remaining\": \"994\",\n  \"x-ratelimit-reset\": \"1777918399\",\n  \"age\": \"18983\",\n  \"cf-cache-status\": \"HIT\",\n  \"cf-ray\": \"9f6b498729fa5d5c-LAX\",\n  \"alt-svc\": \"h3=\\\":443\\\"; ma=86400\"\n}\nBody: {}\n\n\nhttps://on.cypress.io/request",
+                "estack": "CypressError: `cy.request()` failed on:\n\nhttps://jsonplaceholder.typicode.com/posts/101\n\nThe response we received from your web server was:\n\n  > 404: Not Found\n\nThis was considered a failure because the status code was not `2xx` or `3xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n\n-----------------------------------------------------------\n\nThe request we sent was:\n\nMethod: GET\nURL: https://jsonplaceholder.typicode.com/posts/101\nHeaders: {\n  \"Connection\": \"keep-alive\",\n  \"user-agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Cypress/15.14.2 Chrome/138.0.7204.251 Electron/37.6.0 Safari/537.36\",\n  \"accept\": \"*/*\",\n  \"accept-encoding\": \"gzip, deflate\"\n}\n\n-----------------------------------------------------------\n\nThe response we got was:\n\nStatus: 404 - Not Found\nHeaders: {\n  \"date\": \"Mon, 04 May 2026 23:29:23 GMT\",\n  \"content-type\": \"application/json; charset=utf-8\",\n  \"content-length\": \"2\",\n  \"connection\": \"keep-alive\",\n  \"access-control-allow-credentials\": \"true\",\n  \"cache-control\": \"max-age=43200\",\n  \"etag\": \"W/\\\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\\\"\",\n  \"expires\": \"-1\",\n  \"nel\": \"{\\\"report_to\\\":\\\"heroku-nel\\\",\\\"response_headers\\\":[\\\"Via\\\"],\\\"max_age\\\":3600,\\\"success_fraction\\\":0.01,\\\"failure_fraction\\\":0.1}\",\n  \"pragma\": \"no-cache\",\n  \"report-to\": \"{\\\"group\\\":\\\"heroku-nel\\\",\\\"endpoints\\\":[{\\\"url\\\":\\\"https://nel.heroku.com/reports?s=MHSs%2BvjAvv%2FTt3YfXSUnN%2B%2B8kADQK%2B0qMDZ8hJrJi7g%3D\\\\u0026sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d\\\\u0026ts=1777918379\\\"}],\\\"max_age\\\":3600}\",\n  \"reporting-endpoints\": \"heroku-nel=\\\"https://nel.heroku.com/reports?s=MHSs%2BvjAvv%2FTt3YfXSUnN%2B%2B8kADQK%2B0qMDZ8hJrJi7g%3D&sid=e11707d5-02a7-43ef-b45e-2cf4d2036f7d&ts=1777918379\\\"\",\n  \"server\": \"cloudflare\",\n  \"vary\": \"Origin, Accept-Encoding\",\n  \"via\": \"2.0 heroku-router\",\n  \"x-content-type-options\": \"nosniff\",\n  \"x-powered-by\": \"Express\",\n  \"x-ratelimit-limit\": \"1000\",\n  \"x-ratelimit-remaining\": \"994\",\n  \"x-ratelimit-reset\": \"1777918399\",\n  \"age\": \"18983\",\n  \"cf-cache-status\": \"HIT\",\n  \"cf-ray\": \"9f6b498729fa5d5c-LAX\",\n  \"alt-svc\": \"h3=\\\":443\\\"; ma=86400\"\n}\nBody: {}\n\n\nhttps://on.cypress.io/request\n    at <unknown> (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:136585:72)\n    at tryCatcher (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:1671:18)\n    at _drainQueueStep (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:2256:14)\nFrom Your Spec Code:\n    at Context.eval (webpack://ancora-qa-project/./cypress/support/commands.js:21:4)\n    at getRet (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:122944:20)\n    at tryCatcher (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:4285:29)\n    at Context.thenFn (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:122955:66)\n    at Context.then (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:123206:21)\n    at wrapped (https://jsonplaceholder.typicode.com/__cypress/runner/cypress_runner.js:146482:19)",
+                "diff": null
+              },
+              "uuid": "2fbf42fc-eb49-44ea-bdd1-833315066862",
+              "parentUUID": "5ef10a4f-1312-45ef-a9b1-55e141a7bb4b",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "2fbf42fc-eb49-44ea-bdd1-833315066862"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 952,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [
+        "5bb6e41a-7f9a-4d59-b987-399c955cc525"
+      ],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 114,
+      "root": true,
+      "rootEmpty": false,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

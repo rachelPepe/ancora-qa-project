@@ -1,0 +1,126 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-05-04T23:29:19.783Z",
+    "end": "2026-05-04T23:29:20.324Z",
+    "duration": 541,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "45f016a8-a731-4aed-8541-8302df9bee97",
+      "title": "",
+      "fullFile": "cypress/e2e/02_createPost.spec.js",
+      "file": "cypress/e2e/02_createPost.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [
+        {
+          "title": "should fail to create post with missing title",
+          "fullTitle": "should fail to create post with missing title",
+          "timedOut": null,
+          "duration": 174,
+          "state": "passed",
+          "speed": "fast",
+          "pass": true,
+          "fail": false,
+          "pending": false,
+          "context": null,
+          "code": "cy.request({\n  method: \"POST\",\n  url: \"/posts\",\n  failOnStatusCode: false,\n  body: {\n    body: \"Missing title\",\n    userId: 1\n  }\n}).then(response => {\n  // JSONPlaceholder will still return 201\n  expect(response.status).to.eq(201);\n});",
+          "err": {},
+          "uuid": "0370cb1d-722b-4b8f-90fb-960db63b5d65",
+          "parentUUID": "45f016a8-a731-4aed-8541-8302df9bee97",
+          "isHook": false,
+          "skipped": false
+        }
+      ],
+      "suites": [
+        {
+          "uuid": "0e4718ca-3ba4-4de1-a749-af54d7715c5c",
+          "title": "Spec 02 - Create Post",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should create a post successfully",
+              "fullTitle": "Spec 02 - Create Post should create a post successfully",
+              "timedOut": null,
+              "duration": 322,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.fixture(\"createPost\").then(postData => {\n  cy.request({\n    method: \"POST\",\n    url: \"/posts\",\n    headers: {\n      Authorization: `Bearer ${Cypress.env(\"token\")}`\n    },\n    body: postData\n  }).then(response => {\n    expect(response.status).to.eq(201);\n    expect(response.body).to.have.property(\"id\");\n    const postId = response.body.id;\n    Cypress.env(\"createdPostId\", postId);\n    cy.task(\"setEnv\", {\n      key: \"createdPostId\",\n      value: postId\n    });\n  });\n});",
+              "err": {},
+              "uuid": "0259aadf-541a-4f00-838e-8e24634f40cf",
+              "parentUUID": "0e4718ca-3ba4-4de1-a749-af54d7715c5c",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "0259aadf-541a-4f00-838e-8e24634f40cf"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 322,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [
+        "0370cb1d-722b-4b8f-90fb-960db63b5d65"
+      ],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 174,
+      "root": true,
+      "rootEmpty": false,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

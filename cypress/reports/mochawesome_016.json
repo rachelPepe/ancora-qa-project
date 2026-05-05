@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-05-05T00:47:56.639Z",
+    "end": "2026-05-05T00:47:57.409Z",
+    "duration": 770,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "20da2fd1-5aac-4d5c-b12f-793ef4e8535c",
+      "title": "",
+      "fullFile": "cypress/e2e/03_getPost.spec.js",
+      "file": "cypress/e2e/03_getPost.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "755d6a01-3cfd-4ee7-842f-67b7c6349f73",
+          "title": "Spec 03 - Get Post",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should attempt to retrieve the created post",
+              "fullTitle": "Spec 03 - Get Post should attempt to retrieve the created post",
+              "timedOut": null,
+              "duration": 298,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// ** reads the stored ID from cypress.env.json using cy.readFile\ncy.readFile(\"cypress.env.json\").then(env => {\n  const postId = env.createdPostId;\n  cy.request({\n    method: \"GET\",\n    url: `/posts/${postId}`,\n    failOnStatusCode: false\n  }).then(response => {\n    // NOTE:\n    // JSONPlaceholder does not persist created resources.\n    // ** In a real API, this would return 200 and we would validate:\n    // expect(response.body.id).to.eq(postId)\n    // Here, we expect 404 due to mock limitation.\n    expect(response.status).to.eq(404);\n  });\n});",
+              "err": {},
+              "uuid": "9f16f644-88f0-44c2-b9e2-4202fc7b005c",
+              "parentUUID": "755d6a01-3cfd-4ee7-842f-67b7c6349f73",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should return 404 for invalid post ID",
+              "fullTitle": "Spec 03 - Get Post should return 404 for invalid post ID",
+              "timedOut": null,
+              "duration": 324,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  method: \"GET\",\n  url: \"/posts/999999\",\n  failOnStatusCode: false\n}).then(response => {\n  expect(response.status).to.eq(404);\n});",
+              "err": {},
+              "uuid": "010b3017-742e-4ab6-a9f2-4585a5fb7123",
+              "parentUUID": "755d6a01-3cfd-4ee7-842f-67b7c6349f73",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should retrieve all posts and validate response structure",
+              "fullTitle": "Spec 03 - Get Post should retrieve all posts and validate response structure",
+              "timedOut": null,
+              "duration": 84,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  method: \"GET\",\n  url: \"/posts\"\n}).then(response => {\n  expect(response.status).to.eq(200);\n  expect(response.body).to.be.an(\"array\");\n  expect(response.body.length).to.be.greaterThan(0);\n});",
+              "err": {},
+              "uuid": "1641c9f4-a3d6-4c50-a7d0-c33550061035",
+              "parentUUID": "755d6a01-3cfd-4ee7-842f-67b7c6349f73",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "9f16f644-88f0-44c2-b9e2-4202fc7b005c",
+            "010b3017-742e-4ab6-a9f2-4585a5fb7123",
+            "1641c9f4-a3d6-4c50-a7d0-c33550061035"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 706,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-05-05T00:47:59.510Z",
+    "end": "2026-05-05T00:48:00.020Z",
+    "duration": 510,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "efbe9524-c417-4529-b096-fa6cd7cb9d70",
+      "title": "",
+      "fullFile": "cypress/e2e/04_deletePost.spec.js",
+      "file": "cypress/e2e/04_deletePost.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "5274c2eb-97e2-4599-8a66-38a8b72b8b22",
+          "title": "Spec 04 - Delete Post",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should delete a post (mock behavior)",
+              "fullTitle": "Spec 04 - Delete Post should delete a post (mock behavior)",
+              "timedOut": null,
+              "duration": 338,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// ** reads the stored ID from cypress.env.json using cy.readFile\ncy.readFile(\"cypress.env.json\").then(env => {\n  const postId = env.createdPostId;\n  cy.request({\n    method: \"DELETE\",\n    url: `/posts/${postId}`,\n    failOnStatusCode: false\n  }).then(response => {\n    // NOTE:\n    // ** JSONPlaceholder returns 200 for DELETE requests.\n    // In a real API, this would likely return 204 No Content.\n    expect(response.status).to.eq(200);\n  });\n});",
+              "err": {},
+              "uuid": "71e94aaf-1414-4a48-93cd-7b2af86079fc",
+              "parentUUID": "5274c2eb-97e2-4599-8a66-38a8b72b8b22",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should return 200 for non-existent post (mock limitation)",
+              "fullTitle": "Spec 04 - Delete Post should return 200 for non-existent post (mock limitation)",
+              "timedOut": null,
+              "duration": 130,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.request({\n  method: \"DELETE\",\n  url: \"/posts/999999\",\n  failOnStatusCode: false\n}).then(response => {\n  // NOTE:\n  // ** JSONPlaceholder returns 200 even for non-existent resources.\n  // A real API would typically return 404 Not Found.\n  expect(response.status).to.eq(200);\n});",
+              "err": {},
+              "uuid": "7114f053-f371-40b7-9352-ddac2393ba24",
+              "parentUUID": "5274c2eb-97e2-4599-8a66-38a8b72b8b22",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "71e94aaf-1414-4a48-93cd-7b2af86079fc",
+            "7114f053-f371-40b7-9352-ddac2393ba24"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 468,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports",
+        "overwrite": false,
+        "html": true,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
