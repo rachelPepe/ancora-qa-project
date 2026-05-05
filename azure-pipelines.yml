@@ -1,0 +1,129 @@
+# azure-pipelines.yml
+# QA Automation Pipeline - Cypress REST API Smoke Tests
+# -------------------------------------------------------
+
+
+# ** Pipeline triggers on merge to the QA branch and runs the full
+# Cypress test suite against the deployed QA environment.
+
+trigger:
+  branches:
+    include:
+      - qa
+
+# Optional: Only trigger when test files or config changes
+# paths:
+#   include:
+#     - cypress/**
+#     - azure-pipelines.yml
+
+pool:
+  vmImage: 'ubuntu-latest'   # or windows-latest if required
+
+# ------------------------------------
+# Pipeline Variables
+# Sensitive values (passwords, tokens) must be stored in:
+# Azure DevOps > Pipelines > Library > Variable Groups
+# OR directly as secret pipeline variables - NEVER hardcoded here
+# ------------------------------------
+variables:
+  # ** Sensitive credentials are stored in a secure Azure variable group
+  # and injected into the pipeline as environment variables prefixed with CYPRESS_.
+  - group: <<qa-cypress-secrets>> 
+  # Non-sensitive variables can be defined inline:
+  - name: BASE_URL
+    value: 'https://jsonplaceholder.typicode.com'   # e.g. https://api.qa.yourapp.com
+  - name: NODE_VERSION
+    value: '18.x'
+
+# ------------------------------------
+# STAGE 1: Install and Validate
+# ** Separate stages for dependency install and test execution
+# ** Keeps responsibilities isolated and improves reliability 
+# ------------------------------------
+
+stages:
+  - stage: Setup
+    displayName: 'Install Dependencies'
+    jobs:
+      - job: Install
+        displayName: 'Node.js Setup and npm install'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(NODE_VERSION)
+            displayName: 'Install Node.js'
+
+          - script: npm ci
+            displayName: 'Install npm dependencies'
+
+          - script: npx cypress verify
+            displayName: 'Verify Cypress installation'
+
+  # ------------------------------------
+  # STAGE 2: Run Cypress API Tests
+  # ** Runs AFTER Setup stage succeeds - prevents test failures caused by missing dependencies
+  # Tests are injected with QA env variables from the variable group
+  # ------------------------------------
+  - stage: CypressAPITests
+    displayName: 'Run Cypress API Smoke Tests'
+    dependsOn: Setup
+    condition: succeeded()
+    jobs:
+      - job: RunTests
+        displayName: 'Cypress REST API Test Suite'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(NODE_VERSION)
+            displayName: 'Install Node.js'
+
+          - script: npm ci
+            displayName: 'Reinstall dependencies on test agent'
+
+          # Run Cypress with environment variables injected from pipeline
+          # Secrets from variable group are passed as CYPRESS_ prefixed env vars
+          # which Cypress automatically picks up as Cypress.env() values
+          - script: |
+              npx cypress run \
+                --spec "cypress/e2e/**/*.spec.js" \
+                --reporter mochawesome \
+                --reporter-options "reportDir=cypress/reports,overwrite=false,html=true,json=true" \
+                --env BASE_URL=$(BASE_URL),username=$(CYPRESS_USERNAME),password=$(CYPRESS_PASSWORD)
+            displayName: 'Run Cypress Smoke Tests'
+            env:
+              # ** Map secret variable group values to environment variables
+              # These become Cypress.env('username') and Cypress.env('password') at runtime
+              CYPRESS_USERNAME: $(QA_USERNAME)
+              CYPRESS_PASSWORD: $(QA_PASSWORD)
+              
+          # ------------------------------------
+          # STAGE 3: Publish Test Results
+          # Runs regardless of test pass/fail so you always see the report
+          # ------------------------------------
+          - task: PublishTestResults@2
+            condition: always()
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: 'cypress/reports/*.xml'
+              mergeTestResults: true
+              testRunTitle: 'Cypress API Smoke Tests - QA Environment'
+            displayName: 'Publish JUnit Test Results'
+          # ** Publishes the Mochawesome HTML report as pipeline artifact 
+          # so that results can be viewed without re running the tests 
+          - task: PublishPipelineArtifact@1
+            condition: always()
+            inputs:
+              targetPath: 'cypress/reports'
+              artifact: 'cypress-test-reports'
+              publishLocation: 'pipeline'
+            displayName: 'Publish Mochawesome HTML Report as Artifact'
+          # ** screenshots are only uploaded when tests fail to reduce noise while
+          # still providing debugging 
+          - task: PublishPipelineArtifact@1
+            condition: failed()
+            inputs:
+              targetPath: 'cypress/screenshots'
+              artifact: 'cypress-screenshots-on-failure'
+              publishLocation: 'pipeline'
+            displayName: 'Publish Screenshots on Failure'
